@@ -31,7 +31,10 @@ Afterwards in your HTML you can include the `wasm_exec.js` and load the binary:
       function opensslLoaded() { console.log("openssl.wasm loaded") }
 
       const go = new Go()
-      WebAssembly.instantiateStreaming(fetch("openssl.wasm"), go.importObject).then(async obj => await go.run(obj.instance))
+      WebAssembly.instantiateStreaming(fetch("openssl.wasm"), go.importObject)
+        .then(async (obj) => {
+          await go.run(obj.instance)
+        })
     </script>
   </body>
 </html>
