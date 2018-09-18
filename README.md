@@ -40,11 +40,11 @@ Afterwards in your HTML you can include the `wasm_exec.js` and load the binary:
 </html>
 ```
 
-If you have a top-level function `opensslLoaded()` defined, this will be called in the initialization of the `openssl.wasm`. This serves as a notification you do have now access to the top-level functions `encrypt` and `decrypt`:
+If you have a top-level function `opensslLoaded()` defined, this will be called in the initialization of the `openssl.wasm`. This serves as a notification you do have now access to the top-level functions `opensslEncrypt` and `opensslDecrypt`:
 
 ```javascript
-function decrypt(ciphertext, passphrase, callback) {}
-function encrypt(plaintext, passphrase, callback) {}
+function opensslDecrypt(ciphertext, passphrase, callback) {}
+function opensslEncrypt(plaintext, passphrase, callback) {}
 ```
 
 The functions will not return anything in the moment as in the current state Go WASM support does not have return values. Instead the callback function you've provided will be called and always have two arguments: `function callback(result, error)` - The `result` will be the plaintext on `decrypt` and the ciphertext on `encrypt`. The `error` will either be `null` or a string containing details about the error. When an error occurred the `result` is `null`.

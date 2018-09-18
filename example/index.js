@@ -5,12 +5,12 @@ function decryptResponse(plaintext, error) {
 function encryptResponse(ciphertext, error) {
   console.log(["encryptResponse", ciphertext, error])
   if (error === null) {
-    decrypt(ciphertext, "password", decryptResponse)
+    opensslDecrypt(ciphertext, "password", decryptResponse)
   }
 }
 
 function opensslLoaded() {
-  encrypt("Knut", "password", encryptResponse)
+  opensslEncrypt("Knut", "password", encryptResponse)
 }
 
 const go = new Go()

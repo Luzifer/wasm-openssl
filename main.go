@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	js.Global().Set("decrypt", js.NewCallback(decrypt))
-	js.Global().Set("encrypt", js.NewCallback(encrypt))
+	js.Global().Set("opensslDecrypt", js.NewCallback(decrypt))
+	js.Global().Set("opensslEncrypt", js.NewCallback(encrypt))
 
 	// Trigger custom "event"
 	if js.Global().Get("opensslLoaded").Type() == js.TypeFunction {
