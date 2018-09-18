@@ -14,6 +14,6 @@ $ ls -lh main.wasm*
 Chrome dev console output:
 
 ```
-(index):14 (2) ["encryptResponse", "U2FsdGVkX1/baq9kUCX1EmUY/XZfnz7CwqGr70vqo6g="]
-(index):10 (2) ["decryptResponse", "Knut"]
+index.js:6 (3) ["encryptResponse", "U2FsdGVkX1+IAEdepsByQ9zEm11UWw4QSBPYsMzfiio=", null]
+index.js:2 (3) ["decryptResponse", "Knut", null]
 ```

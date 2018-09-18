@@ -12,7 +12,7 @@ func main() {
 	js.Global().Set("encrypt", js.NewCallback(encrypt))
 
 	// Trigger custom "event"
-	js.Global().Call("wasmStartSuccess")
+	js.Global().Call("opensslLoaded")
 	<-make(chan struct{}, 0)
 }
 
@@ -31,11 +31,11 @@ func decrypt(i []js.Value) {
 	o := openssl.New()
 	plaintext, err := o.DecryptString(password, ciphertext)
 	if err != nil {
-		println(fmt.Sprintf("decrypt failed: %s", err))
+		callback.Invoke(nil, fmt.Sprintf("decrypt failed: %s", err))
 		return
 	}
 
-	callback.Invoke(string(plaintext))
+	callback.Invoke(string(plaintext), nil)
 }
 
 func encrypt(i []js.Value) {
@@ -53,9 +53,9 @@ func encrypt(i []js.Value) {
 	o := openssl.New()
 	ciphertext, err := o.EncryptString(password, plaintext)
 	if err != nil {
-		println(fmt.Sprintf("encrypt failed: %s", err))
+		callback.Invoke(nil, fmt.Sprintf("encrypt failed: %s", err))
 		return
 	}
 
-	callback.Invoke(string(ciphertext))
+	callback.Invoke(string(ciphertext), nil)
 }

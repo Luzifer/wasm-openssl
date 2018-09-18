@@ -1,13 +1,15 @@
-function decryptResponse(plaintext) {
-  console.log(["decryptResponse", plaintext])
+function decryptResponse(plaintext, error) {
+  console.log(["decryptResponse", plaintext, error])
 }
 
-function encryptResponse(ciphertext) {
-  console.log(["encryptResponse", ciphertext])
-  decrypt(ciphertext, "password", decryptResponse)
+function encryptResponse(ciphertext, error) {
+  console.log(["encryptResponse", ciphertext, error])
+  if (error === null) {
+    decrypt(ciphertext, "password", decryptResponse)
+  }
 }
 
-function wasmStartSuccess() {
+function opensslLoaded() {
   encrypt("Knut", "password", encryptResponse)
 }
 
