@@ -35,7 +35,7 @@ Afterwards in your HTML you can include the `wasm_exec.js` and load the binary:
 </html>
 ```
 
-Be sure to have a top-level function `opensslLoaded()` defined as this will be called in the initialization of the `openssl.wasm`. This serves as a notification you do have now access to the top-level functions `encrypt` and `decrypt`:
+If you have a top-level function `opensslLoaded()` defined, this will be called in the initialization of the `openssl.wasm`. This serves as a notification you do have now access to the top-level functions `encrypt` and `decrypt`:
 
 ```javascript
 function decrypt(ciphertext, passphrase, callback) {}

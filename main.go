@@ -12,7 +12,10 @@ func main() {
 	js.Global().Set("encrypt", js.NewCallback(encrypt))
 
 	// Trigger custom "event"
-	js.Global().Call("opensslLoaded")
+	if js.Global().Get("opensslLoaded").Type() == js.TypeFunction {
+		js.Global().Call("opensslLoaded")
+	}
+
 	<-make(chan struct{}, 0)
 }
 
