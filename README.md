@@ -7,6 +7,8 @@
 
 `wasm-openssl` is a WASM wrapper around [go-openssl](https://github.com/Luzifer/go-openssl) to be used in Javascript projects.
 
+**A word of warning:** This relies on the **experimental** WASM implementation in Golang. It is working but most likely will not have its final state. When the Golang implementation of WASM changes this likely will change too. Following SemVer every breaking change will have an increase of the major version with an explanation in the [changelog](History.md).
+
 ## Usage
 
 You will need to have `wasm_exec.js` installed in your project to load the binary:
