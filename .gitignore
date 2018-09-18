@@ -1,2 +1,2 @@
-main.wasm*
+openssl.wasm
 wasm_exec.js

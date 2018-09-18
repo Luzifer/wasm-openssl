@@ -14,4 +14,4 @@ function opensslLoaded() {
 }
 
 const go = new Go()
-WebAssembly.instantiateStreaming(fetch("main.wasm"), go.importObject).then(async obj => await go.run(obj.instance))
+WebAssembly.instantiateStreaming(fetch("openssl.wasm"), go.importObject).then(async obj => await go.run(obj.instance))
