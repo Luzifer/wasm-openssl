@@ -1,0 +1,11 @@
+---
+
+image: "reporunner/golang-alpine"
+checkout_dir: /go/src/github.com/Luzifer/wasm-openssl
+
+commands:
+  - make publish
+
+environment:
+  ARCHS: js/wasm
+  CGO_ENABLED: 0

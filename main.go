@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"syscall/js"
 
-	openssl "github.com/Luzifer/go-openssl/v2"
+	openssl "github.com/Luzifer/go-openssl"
 )
 
 func main() {
