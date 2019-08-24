@@ -7,38 +7,13 @@
 
 `wasm-openssl` is a WASM wrapper around [go-openssl](https://github.com/Luzifer/go-openssl) to be used in Javascript projects.
 
-**A word of warning:** This relies on the **experimental** WASM implementation in Golang. It is working but most likely will not have its final state. When the Golang implementation of WASM changes this likely will change too. Following SemVer every breaking change will have an increase of the major version with an explanation in the [changelog](History.md).
+**A word of warning:** This relies on the **experimental** WASM implementation in Golang. It is working but most likely will not have its final state. When the Golang implementation of WASM changes this likely will change too. As long as the WASM implementation in Go is experimental this only serves as a proof-of-concept and maybe shouldn't be used in production!
 
 ## Usage
 
-You will need to have `wasm_exec.js` installed in your project to load the binary:
+You will need to have `wasm_exec.js` installed in your project to load the binary. This file can be found in [golang/go](https://github.com/golang/go/tree/master/misc/wasm) repository. (Make sure the version of the file matches the version of Go used to compile the WASM file.
 
-```console
-$ curl -sSfLo wasm_exec.js "https://raw.githubusercontent.com/golang/go/go1.11/misc/wasm/wasm_exec.js"
-```
-
-Afterwards in your HTML you can include the `wasm_exec.js` and load the binary:
-
-```html
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-  </head>
-  <body>
-    <script src="wasm_exec.js"></script>
-    <script>
-      function opensslLoaded() { console.log("openssl.wasm loaded") }
-
-      const go = new Go()
-      WebAssembly.instantiateStreaming(fetch("openssl.wasm"), go.importObject)
-        .then(async (obj) => {
-          await go.run(obj.instance)
-        })
-    </script>
-  </body>
-</html>
-```
+For an embedding example see the `example` folder in this repo.
 
 If you have a top-level function `opensslLoaded()` defined, this will be called in the initialization of the `openssl.wasm`. This serves as a notification you do have now access to the top-level functions `opensslEncrypt` and `opensslDecrypt`:
 
