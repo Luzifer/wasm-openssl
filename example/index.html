@@ -28,30 +28,32 @@
             {{ error }}
           </b-alert>
 
-          <b-form-input
-            v-model="passphrase" 
-            class="mb-2"
-            placeholder="Put a passphrase here..."
-          ></b-form-input>
+          <template v-if="loaded">
+            <b-form-input
+              v-model="passphrase" 
+              class="mb-2"
+              placeholder="Put a passphrase here..."
+            ></b-form-input>
 
-          <b-form-textarea
-            class="mb-2"
-            rows="3"
-            max-rows="10"
-            placeholder="Enter plaintext here..."
-            v-model="plaintext"
-          ></b-form-textarea>
+            <b-form-textarea
+              class="mb-2"
+              rows="3"
+              max-rows="10"
+              placeholder="Enter plaintext here..."
+              v-model="plaintext"
+            ></b-form-textarea>
 
-          <b-button variant="primary" @click="encrypt" :disabled="!passphrase || !plaintext">Encrypt plaintext...</b-button>
-          <b-button @click="decrypt" :disabled="!passphrase || !ciphertext">Decrypt ciphertext...</b-button>
+            <b-button variant="primary" @click="encrypt" :disabled="!passphrase || !plaintext">Encrypt plaintext...</b-button>
+            <b-button @click="decrypt" :disabled="!passphrase || !ciphertext">Decrypt ciphertext...</b-button>
 
-          <b-form-textarea
-            class="mt-2"
-            rows="3"
-            max-rows="10"
-            placeholder="Paste ciphertext here..."
-            v-model="ciphertext"
-          ></b-form-textarea>
+            <b-form-textarea
+              class="mt-2"
+              rows="3"
+              max-rows="10"
+              placeholder="Paste ciphertext here..."
+              v-model="ciphertext"
+            ></b-form-textarea>
+          </template>
 
         </b-col>
       </b-row>
@@ -123,7 +125,9 @@
           
           WebAssembly.instantiateStreaming(fetch("openssl.wasm"), go.importObject)
             .then(result => go.run(result.instance))
-            .catch(err => console.error(err))
+            .catch(err => {
+              this.error = err
+            })
         },
       },
 
