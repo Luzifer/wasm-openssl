@@ -1,10 +1,136 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-	</head>
-	<body>
-		<script src="wasm_exec.js"></script>
-		<script src="index.js"></script>
-  </body>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Luzifer / wasm-openssl - DEMO</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/bootstrap-vue@2.0.0-rc.28/dist/bootstrap-vue.min.css,npm/bootstrap@4.3.1/dist/css/bootstrap.min.css">
+
+  <div id="app">
+    <b-container>
+      <b-row class="mt-3">
+        <b-col class="text-center">
+
+          <h1 class="mb-3">Luzifer / wasm-openssl - DEMO</h1>
+
+          <b-alert
+            :show="!loaded"
+            variant="primary"
+          >
+            Loading WASM... (If this message persists check console for errors!)
+          </b-alert>
+
+          <b-alert
+            :show="error !== ''"
+            variant="danger"
+          >
+            {{ error }}
+          </b-alert>
+
+          <b-form-input
+            v-model="passphrase" 
+            class="mb-2"
+            placeholder="Put a passphrase here..."
+          ></b-form-input>
+
+          <b-form-textarea
+            class="mb-2"
+            rows="3"
+            max-rows="10"
+            placeholder="Enter plaintext here..."
+            v-model="plaintext"
+          ></b-form-textarea>
+
+          <b-button variant="primary" @click="encrypt" :disabled="!passphrase || !plaintext">Encrypt plaintext...</b-button>
+          <b-button @click="decrypt" :disabled="!passphrase || !ciphertext">Decrypt ciphertext...</b-button>
+
+          <b-form-textarea
+            class="mt-2"
+            rows="3"
+            max-rows="10"
+            placeholder="Paste ciphertext here..."
+            v-model="ciphertext"
+          ></b-form-textarea>
+
+        </b-col>
+      </b-row>
+    </b-container>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/combine/npm/vue@2.6.10,npm/bootstrap-vue@2.0.0-rc.28/dist/bootstrap-vue.min.js"></script>
+  <script src="wasm_exec.js"></script>
+  <script>
+    function decryptResponse(plaintext, error) {
+      console.log(["decryptResponse", plaintext, error])
+    }
+    
+    function encryptResponse(ciphertext, error) {
+      console.log(["encryptResponse", ciphertext, error])
+      if (error === null) {
+        opensslDecrypt(ciphertext, "password", decryptResponse)
+      }
+    }
+    
+    function opensslLoaded() {
+      app.$data.loaded = true
+    }
+    
+    const app = new Vue({
+      data: {
+        ciphertext: '',
+        error: '',
+        loaded: false,
+        passphrase: '',
+        plaintext: '',
+      },
+
+      el: '#app',
+
+      methods: {
+        decrypt() {
+          opensslDecrypt(this.ciphertext, this.passphrase, (plaintext, err) => {
+            if (err) {
+              this.error = err
+              return
+            }
+
+            this.plaintext = plaintext
+          })
+        },
+
+        encrypt() {
+          opensslEncrypt(this.plaintext, this.passphrase, (ciphertext, err) => {
+            if (err) {
+              this.error = err
+              return
+            }
+
+            this.ciphertext = ciphertext
+          })
+        },
+
+        initWASM() {
+          if (!WebAssembly.instantiateStreaming) { // polyfill
+            WebAssembly.instantiateStreaming = async (resp, importObject) => {
+              const source = await (await resp).arrayBuffer()
+              return await WebAssembly.instantiate(source, importObject)
+            }
+          }
+          
+          const go = new Go()
+          let mod, inst
+          
+          WebAssembly.instantiateStreaming(fetch("openssl.wasm"), go.importObject)
+            .then(result => go.run(result.instance))
+            .catch(err => console.error(err))
+        },
+      },
+
+      mounted() {
+        this.initWASM()
+      },
+
+    })
+  </script>
 </html>
