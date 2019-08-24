@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"syscall/js"
 
-	openssl "github.com/Luzifer/go-openssl"
+	openssl "github.com/Luzifer/go-openssl/v3"
 )
 
+var defaultKDF = openssl.DigestSHA256Sum
+
 func main() {
-	js.Global().Set("opensslDecrypt", js.NewCallback(decrypt))
-	js.Global().Set("opensslEncrypt", js.NewCallback(encrypt))
+	js.Global().Set("opensslDecrypt", js.FuncOf(decrypt))
+	js.Global().Set("opensslEncrypt", js.FuncOf(encrypt))
 
 	// Trigger custom "event"
 	if js.Global().Get("opensslLoaded").Type() == js.TypeFunction {
@@ -19,10 +21,10 @@ func main() {
 	<-make(chan struct{}, 0)
 }
 
-func decrypt(i []js.Value) {
+func decrypt(this js.Value, i []js.Value) interface{} {
 	if len(i) != 3 {
 		println("decrypt requires 3 arguments")
-		return
+		return nil
 	}
 
 	var (
@@ -32,19 +34,20 @@ func decrypt(i []js.Value) {
 	)
 
 	o := openssl.New()
-	plaintext, err := o.DecryptString(password, ciphertext)
+	plaintext, err := o.DecryptBytes(password, []byte(ciphertext), defaultKDF)
 	if err != nil {
 		callback.Invoke(nil, fmt.Sprintf("decrypt failed: %s", err))
-		return
+		return nil
 	}
 
 	callback.Invoke(string(plaintext), nil)
+	return nil
 }
 
-func encrypt(i []js.Value) {
+func encrypt(this js.Value, i []js.Value) interface{} {
 	if len(i) != 3 {
 		println("encrypt requires 3 arguments")
-		return
+		return nil
 	}
 
 	var (
@@ -54,11 +57,12 @@ func encrypt(i []js.Value) {
 	)
 
 	o := openssl.New()
-	ciphertext, err := o.EncryptString(password, plaintext)
+	ciphertext, err := o.EncryptBytes(password, []byte(plaintext), defaultKDF)
 	if err != nil {
 		callback.Invoke(nil, fmt.Sprintf("encrypt failed: %s", err))
-		return
+		return nil
 	}
 
 	callback.Invoke(string(ciphertext), nil)
+	return nil
 }
