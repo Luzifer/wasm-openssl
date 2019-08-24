@@ -1,10 +1,18 @@
-default: build example/wasm_exec.js
+GO_VERSION=1.12.9
+TINYGO_VERSION=0.7.1
 
-build:
-	GOOS=js GOARCH=wasm go build -o example/openssl.wasm main.go
+default: build_golang
 
-example/wasm_exec.js:
-	curl -sSfLo example/wasm_exec.js "https://raw.githubusercontent.com/golang/go/go1.11/misc/wasm/wasm_exec.js"
+build_golang:
+	curl -fLo ./example/wasm_exec.js "https://raw.githubusercontent.com/golang/go/go${GO_VERSION}/misc/wasm/wasm_exec.js"
+	GOOS=js GOARCH=wasm go build \
+			 -o example/openssl.wasm \
+			 main.go
 
-publish:
-	bash golang.sh
+build_tinygo:
+	curl -fLo ./example/wasm_exec.js "https://github.com/tinygo-org/tinygo/blob/v${TINYGO_VERSION}/targets/wasm_exec.js"
+	tinygo build \
+		-o example/openssl.wasm \
+		-target wasm \
+		--no-debug \
+		main.go
