@@ -2,6 +2,7 @@
 ![](https://badges.fyi/github/license/Luzifer/wasm-openssl)
 ![](https://badges.fyi/github/downloads/Luzifer/wasm-openssl)
 ![](https://badges.fyi/github/latest-release/Luzifer/wasm-openssl)
+![](https://knut.in/project-status/wasm-openssl)
 
 # Luzifer / wasm-openssl
 
