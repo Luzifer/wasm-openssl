@@ -1,3 +1,9 @@
+# 0.3.0 / 2019-08-24
+
+  * Add some frontend for testing instead of hardcoded console
+  * Migrate to Go1.12 & go-openssl.v3
+  * Switch vendoring to go modules
+
 # 0.2.0 / 2018-09-18
 
   * Prefix functions to prevent collisions
