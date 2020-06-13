@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"syscall/js"
 
-	openssl "github.com/Luzifer/go-openssl/v3"
+	openssl "github.com/Luzifer/go-openssl/v4"
 )
 
-var defaultKDF = openssl.DigestSHA256Sum
+var defaultCG = openssl.PBKDF2SHA256
 
 func main() {
 	js.Global().Set("opensslDecrypt", js.FuncOf(decrypt))
@@ -34,7 +34,7 @@ func decrypt(this js.Value, i []js.Value) interface{} {
 	)
 
 	o := openssl.New()
-	plaintext, err := o.DecryptBytes(password, []byte(ciphertext), defaultKDF)
+	plaintext, err := o.DecryptBytes(password, []byte(ciphertext), defaultCG)
 	if err != nil {
 		callback.Invoke(nil, fmt.Sprintf("decrypt failed: %s", err))
 		return nil
@@ -57,7 +57,7 @@ func encrypt(this js.Value, i []js.Value) interface{} {
 	)
 
 	o := openssl.New()
-	ciphertext, err := o.EncryptBytes(password, []byte(plaintext), defaultKDF)
+	ciphertext, err := o.EncryptBytes(password, []byte(plaintext), defaultCG)
 	if err != nil {
 		callback.Invoke(nil, fmt.Sprintf("encrypt failed: %s", err))
 		return nil

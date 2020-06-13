@@ -1,5 +1,4 @@
-GO_VERSION=1.12.9
-TINYGO_VERSION=0.7.1
+GO_VERSION=1.14.3
 
 default: build_golang
 
@@ -8,11 +7,3 @@ build_golang:
 	GOOS=js GOARCH=wasm go build \
 			 -o example/openssl.wasm \
 			 main.go
-
-build_tinygo:
-	curl -fLo ./example/wasm_exec.js "https://github.com/tinygo-org/tinygo/blob/v${TINYGO_VERSION}/targets/wasm_exec.js"
-	tinygo build \
-		-o example/openssl.wasm \
-		-target wasm \
-		--no-debug \
-		main.go
