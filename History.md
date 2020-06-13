@@ -1,3 +1,9 @@
+# 0.4.0 / 2020-06-13
+
+  * Update example / demo for new API
+  * Extend API for the user to configure key derivation
+  * Upgrade to go-openssl v4
+
 # 0.3.0 / 2019-08-24
 
   * Add some frontend for testing instead of hardcoded console
