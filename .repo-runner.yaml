@@ -9,4 +9,5 @@ commands:
 environment:
   ARCHS: js/wasm
   CGO_ENABLED: 0
+  DRAFT: "false"
   NO_TESTS: "true"
