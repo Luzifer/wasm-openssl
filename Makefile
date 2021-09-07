@@ -1,4 +1,4 @@
-GO_VERSION=1.14.3
+GO_VERSION=1.17
 
 default: build_golang
 
