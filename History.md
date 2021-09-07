@@ -1,3 +1,8 @@
+# 0.5.0 / 2021-09-07
+
+  * Update to Go1.17, update go-openssl
+  * Auto-publish releases
+
 # 0.4.0 / 2020-06-13
 
   * Update example / demo for new API
